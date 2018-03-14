@@ -1,0 +1,9 @@
+version: 2
+jobs:
+  build:
+    working_directory: /tmp/mackerel-plugins
+    docker:
+      - image: golang:1.10.0
+    steps:
+       - checkout
+       - run: GOOS=linux GOARCH=amd64 go build -o build/${CIRCLE_PROJECT_REPONAME}
