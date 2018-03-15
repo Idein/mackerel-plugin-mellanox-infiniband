@@ -20,7 +20,7 @@ func (p InfinibandPlugin) GraphDefinition() map[string](mp.Graphs) {
 			Label: "Mellanox Infiniband TX/RX",
 			Unit:  "bytes/sec",
 			Metrics: []mp.Metrics{
-				{Name: "*", Label: "%1 port%2 - %3", Diff: true, Scale: 4},
+				{Name: "*", Label: "%1 port%2 - %3", Diff: true, Scale: 4}, // Scale for 4 (lanes)
 			},
 		},
 	}
@@ -28,6 +28,7 @@ func (p InfinibandPlugin) GraphDefinition() map[string](mp.Graphs) {
 
 func (p InfinibandPlugin) FetchMetrics() (map[string]float64, error) {
 	stat := map[string]float64{}
+	// see https://community.mellanox.com/docs/DOC-2751, https://community.mellanox.com/docs/DOC-2572
 	ports, err := filepath.Glob("/sys/class/infiniband/*/ports/*")
 	if err != nil {
 		return nil, err
