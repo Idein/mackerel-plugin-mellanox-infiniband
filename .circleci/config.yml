@@ -6,4 +6,4 @@ jobs:
       - image: golang:1.10.0
     steps:
        - checkout
-       - run: GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o build/${CIRCLE_PROJECT_REPONAME}
+       - run: GOOS=linux GOARCH=amd64 make
