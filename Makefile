@@ -13,6 +13,8 @@ LDFLAGS += -X main.gitcommit=$(REVISION)
 
 TARGET := $(BINDIR)/mackerel-plugin-mellanox-infiniband
 
+all: lint build
+
 build: deps
 	$(MAKE) $(TARGET)
 
@@ -35,4 +37,4 @@ testdeps:
 clean:
 	@if [ -d build ]; then rm -rfv build; fi
 
-.PHONY: build deps lint testdeps clean
+.PHONY: all build deps lint testdeps clean
