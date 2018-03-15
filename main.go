@@ -10,10 +10,12 @@ import (
 	"strconv"
 )
 
+// InfinibandPlugin mackerel plugin
 type InfinibandPlugin struct {
 	Prefix string
 }
 
+// GraphDefinition interface for mackerelplugin
 func (p InfinibandPlugin) GraphDefinition() map[string](mp.Graphs) {
 	return map[string]mp.Graphs{
 		"*.*": {
@@ -26,6 +28,7 @@ func (p InfinibandPlugin) GraphDefinition() map[string](mp.Graphs) {
 	}
 }
 
+// FetchMetrics interface for mackerelplugin
 func (p InfinibandPlugin) FetchMetrics() (map[string]float64, error) {
 	stat := map[string]float64{}
 	// see https://community.mellanox.com/docs/DOC-2751, https://community.mellanox.com/docs/DOC-2572
@@ -53,6 +56,7 @@ func (p InfinibandPlugin) FetchMetrics() (map[string]float64, error) {
 	return stat, nil
 }
 
+// MetricKeyPrefix interface for PluginWithPrefix
 func (p InfinibandPlugin) MetricKeyPrefix() string {
 	if p.Prefix == "" {
 		p.Prefix = "mellanox-infiniband"
@@ -60,6 +64,7 @@ func (p InfinibandPlugin) MetricKeyPrefix() string {
 	return p.Prefix
 }
 
+// ReadValue returns a uint64 value from a file.
 func ReadValue(path string) (n uint64, err error) {
 	_, err = os.Stat(path)
 	if err != nil {
