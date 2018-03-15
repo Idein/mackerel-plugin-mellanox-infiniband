@@ -8,7 +8,7 @@ This plugin monitors `/sys/class/infiniband/mlx*/ports/*/counters/{port_rcv_data
 ## Synopsis
 
 ```shell
-mackerel-plugin-mellanox-infiniband
+mackerel-plugin-mellanox-infiniband [-version]
 ```
 
 ## Example of mackerel-agent.conf

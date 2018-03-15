@@ -3,12 +3,17 @@ package main
 import (
 	"bufio"
 	"flag"
+	"fmt"
 	mp "github.com/mackerelio/go-mackerel-plugin"
 	"os"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"strconv"
 )
+
+var version string
+var gitcommit string
 
 // InfinibandPlugin mackerel plugin
 type InfinibandPlugin struct {
@@ -93,8 +98,16 @@ func ReadValue(path string) (n uint64, err error) {
 func main() {
 	optPrefix := flag.String("metrix-key-prefix", "mellanox-infiniband", "Metric key prefix")
 	optTempfile := flag.String("tempfile", "", "Temp file name")
+	optVersion := flag.Bool("version", false, "Show version to stderr")
 	flag.Parse()
 
+	if *optVersion {
+		fmt.Fprintf(os.Stderr, "version: %s\n", version)
+		fmt.Fprintf(os.Stderr, "revision: %s\n", gitcommit)
+		fmt.Fprintf(os.Stderr, "runtime GOOS: %s\n", runtime.GOOS)
+		fmt.Fprintf(os.Stderr, "runtime GOARCH: %s\n", runtime.GOARCH)
+		fmt.Fprintf(os.Stderr, "runtime version: %s\n", runtime.Version())
+	}
 	infiniband := InfinibandPlugin{
 		Prefix: *optPrefix,
 	}
