@@ -35,6 +35,7 @@ testdeps:
 	go get github.com/golang/lint/golint
 
 clean:
+	@if [ -d dist ]; then rm -rfv dist; fi
 	@if [ -d build ]; then rm -rfv build; fi
 
 release: dist/$(VERSION)/$(TARGET)_$(GOOS)_$(GOARCH).zip
