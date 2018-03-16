@@ -11,17 +11,17 @@ ifneq ($(VERSION),)
 endif
 LDFLAGS += -X main.gitcommit=$(REVISION)
 
-TARGET := $(BINDIR)/mackerel-plugin-mellanox-infiniband
+TARGET := mackerel-plugin-mellanox-infiniband
 
 all: lint build
 
 build: deps
-	$(MAKE) $(TARGET)
+	$(MAKE) $(BINDIR)/$(TARGET)
 
 .SECONDEXPANSION:
-$(TARGET): main.go
+$(BINDIR)/$(TARGET): main.go
 	@if [ ! -d $(BINDIR) ]; then mkdir -p $(BINDIR); fi
-	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -ldflags "$(LDFLAGS)" -o $(TARGET)
+	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -ldflags "$(LDFLAGS)" -o $(BINDIR)/$(TARGET)
 
 deps:
 	go get -d -v
@@ -37,4 +37,10 @@ testdeps:
 clean:
 	@if [ -d build ]; then rm -rfv build; fi
 
-.PHONY: all build deps lint testdeps clean
+release: dist/$(VERSION)/$(TARGET)_$(GOOS)_$(GOARCH).zip
+	hub release create -d -a "dist/$(VERSION)/$(TARGET)_$(GOOS)_$(GOARCH).zip" -m "$(VERSION)" "$(VERSION)"
+
+dist/$(VERSION)/$(TARGET)_$(GOOS)_$(GOARCH).zip: clean build
+	./release.sh
+
+.PHONY: all build deps lint testdeps clean release
