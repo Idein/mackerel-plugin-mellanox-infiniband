@@ -6,4 +6,4 @@ jobs:
       - image: golang:1.10.0
     steps:
        - checkout
-       - run: GOOS=linux GOARCH=amd64 make
+       - run: make

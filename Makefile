@@ -1,9 +1,9 @@
 VERSION ?= $(shell git describe --exact-match --abbrev=0 --tags 2>/dev/null)
 REVISION := $(shell git rev-parse --short HEAD)
 
-GOOS ?= $(shell go env GOOS)
-GOARCH ?= $(shell go env GOARCH)
-BINDIR = build/$(GOOS)/$(GOARCH)
+GOOS := linux
+GOARCH := amd64
+BINDIR := build/$(GOOS)/$(GOARCH)
 
 LDFLAGS := -s -w
 ifneq ($(VERSION),)
@@ -21,7 +21,7 @@ build: deps
 .SECONDEXPANSION:
 $(TARGET): main.go
 	@if [ ! -d $(BINDIR) ]; then mkdir -p $(BINDIR); fi
-	go build -ldflags "$(LDFLAGS)" -o $(TARGET)
+	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -ldflags "$(LDFLAGS)" -o $(TARGET)
 
 deps:
 	go get -d -v
