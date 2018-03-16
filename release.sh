@@ -9,8 +9,11 @@ ARCHIVE_NAME="${NAME}_${GOOS}_${GOARCH}"
 TAG="$(git describe --exact-match --abbrev=0 --tags)"
 DISTDIR="$(dirname "$0")/dist/${TAG}"
 
-# check HEAD is clean
+# check untracked files
 test -z "$(git ls-files --exclude-standard --others)"
+
+# check uncommited changes
+git diff-files --quiet
 
 WORKDIR="$(mktemp -d)"
 mkdir -p "${WORKDIR}/${ARCHIVE_NAME}"
